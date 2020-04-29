@@ -26,5 +26,8 @@ public class IntStack {
 		return top == null;
 	}
 	
+	public int getSize() {
+	  return top.length();
+	}
 	
 }

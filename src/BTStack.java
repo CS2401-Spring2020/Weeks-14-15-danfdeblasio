@@ -26,4 +26,8 @@ public class BTStack {
 	public boolean isEmpty() {
 		return top == null;
 	}
+	
+	 public int getSize() {
+	    return top.length();
+	  }
 }

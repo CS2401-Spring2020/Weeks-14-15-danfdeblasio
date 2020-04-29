@@ -27,27 +27,30 @@ public class PostfixExpression {
 		String[] clauses = expression.split(" ");
 		IntStack s = new IntStack();
 		for(int i=0; i<clauses.length; i++) {
-			if(clauses[i].equals("+")) {
+			if(clauses[i].equals("+") || clauses[i].equals("-") || clauses[i].equals("*") || clauses[i].equals("/")) {
+			  if(s.getSize() < 2) {
+		      System.err.println("Given expression " + expression + " is not valid (empty stack)");
+		      System.exit(1);
+		    }
 				int a = s.pop();
 				int b = s.pop();
-				s.push(a + b);
-			} else if(clauses[i].equals("-")) {
-				int a = s.pop();
-				int b = s.pop();
-				s.push(a - b);
-			} else if(clauses[i].equals("*")) {
-				int a = s.pop();
-				int b = s.pop();
-				s.push(a * b);
-			} else if(clauses[i].equals("/")) {
-				int a = s.pop();
-				int b = s.pop();
-				s.push(a / b);
+				if(clauses[i].equals("+")) {
+  				s.push(a + b);
+  			} else if(clauses[i].equals("-") ) {
+  				s.push(a - b);
+  			} else if(clauses[i].equals("*")) {
+  				s.push(a * b);
+  			} else if(clauses[i].equals("/")) {
+  				s.push(a / b);
+  			}
 			} else {
 				s.push(Integer.parseInt(clauses[i]));
 			}
 		}
-		
+		if(s.getSize() != 1) {
+		  System.err.println("Given expression " + expression + " is not valid (non-empty end)");
+		  System.exit(1);
+		}
 		return s.pop();
 	}
 	

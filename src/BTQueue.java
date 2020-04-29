@@ -33,4 +33,8 @@ public class BTQueue {
 		return front == null;
 	}
 	
+	 public int getSize() {
+	    return front.length();
+	  }
+	
 }

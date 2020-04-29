@@ -6,6 +6,10 @@ import java.io.PrintStream;
 import org.junit.jupiter.api.Test;
 
 class Week1415Tester {
+  
+  public static void main(String[] args) {
+    System.out.println(new PostfixExpression("3 4 + 0 * 7 11 * 6 + +").Evaluate());
+  }
 
 	@Test
 	void PostFixExpression1() {

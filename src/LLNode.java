@@ -18,4 +18,9 @@ public class LLNode<T> {
 		if(next == null) return this;
 		return next.getEnd();
 	}
+	
+	public int length() {
+	  if(next == null) return 1;
+	  return 1 + next.length();
+	}
 }
