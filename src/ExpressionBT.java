@@ -21,8 +21,22 @@ class ExpressionBT{
 		System.out.println();
 	}
 	
+	private boolean isInt(String s) {
+		for(int i=0; i<s.length(); i++) {
+			if(s.charAt(i) < '0' || s.charAt(i) > '9') {
+				if(i!=0 || s.charAt(i) != '-')
+					return false;
+			}
+		}
+		return true;
+	}
+	
 	ExpressionBT(String[] e){
 		//printArr(e);
+		if((e.length+1)!=Math.pow(2, Math.round(Math.log((e.length+1))/Math.log(2)))) {
+			System.err.println("The input array must be a power of 2 minus 1.");
+			System.exit(1);
+		}
 		if(e[0].equals("+") || e[0].equals("-") || e[0].equals("*") || e[0].equals("/")) {
 			type = "operator";
 			operator = e[0].charAt(0);
@@ -34,7 +48,12 @@ class ExpressionBT{
 					left_arr[i++] = e[(int)Math.pow(2, level) + j - 1];
 				}
 			}
-			left = new ExpressionBT(left_arr);
+			if(left_arr[0] != null) {
+				left = new ExpressionBT(left_arr);
+			}else {
+				System.err.println("Somehow, there is a subtree with a null root value.");
+				System.exit(1);
+			}
 			i = 0;
 			String[] right_arr = new String[(e.length - 1)/2];
 			for(int level=1; e.length > Math.pow(2, level); level++) {
@@ -43,12 +62,24 @@ class ExpressionBT{
 					right_arr[i++] = e[(int)Math.pow(2, level)+ j - 1];
 				}
 			}
-			right = new ExpressionBT(right_arr);
+			if(right_arr[0] != null) {
+				right = new ExpressionBT(right_arr);
+			}else {
+				System.err.println("Somehow, there is a subtree with a null root value.");
+				System.exit(1);
+			}
 		}else {
-			try {
+			/*try {
 				value = Integer.parseInt(e[0]);
-				type = "val";
+				type = "value";
 			}catch(NumberFormatException exc) {
+				variable = e[0];
+				type = "var";
+			}*/
+			if(isInt(e[0])) {
+				value = Integer.parseInt(e[0]);
+				type = "value";
+			}else {
 				variable = e[0];
 				type = "var";
 			}
@@ -84,6 +115,7 @@ class ExpressionBT{
 	public int Evaluate(){
 		if(includesVariables()) {
 			System.out.print("there are variables in this expression");
+			return 0;
 		}
 		
 		if(type.equals("operator")) {
@@ -100,7 +132,7 @@ class ExpressionBT{
 			} 
 		}
 		
-		if(type.equals("val")) {
+		if(type.equals("value")) {
 			return value;
 		}
 		
@@ -123,7 +155,7 @@ class ExpressionBT{
 			System.out.print(" )");
 		}
 		
-		if(type.equals("val")) {
+		if(type.equals("value")) {
 			System.out.print(value);
 		}
 	}
