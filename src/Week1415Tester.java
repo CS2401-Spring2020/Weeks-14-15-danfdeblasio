@@ -9,6 +9,7 @@ class Week1415Tester {
   
   public static void main(String[] args) {
     System.out.println(new PostfixExpression("3 4 + 0 * 7 11 * 6 + +").Evaluate());
+    
   }
 
 	@Test
@@ -73,6 +74,17 @@ class Week1415Tester {
 		standardOutput = myOut.toString();
 		assertEquals(0, eval);
 		assertEquals("there are variables in this expression",standardOutput);
+	}
+	
+	@Test 
+	void ExpressionBTFromSplit() {
+		String x = "+ * - / + + + 1 2 3 4 5 6 7 8";
+		String[] y = x.split(" ");
+		ExpressionBT e1 = new ExpressionBT(y);
+
+
+		//ExpressionBT e1 = new ExpressionBT("+ * - / + + + 1 2 3 4 5 6 7 8".split(" "));
+		e1.Print();
 	}
 
 }

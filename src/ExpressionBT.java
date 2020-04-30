@@ -140,10 +140,53 @@ class ExpressionBT{
 		
 	}
 	
+	public void printSingleNode() {
+		if(type.equals("var")) {
+			System.out.print(variable);
+		}
+		
+		if(type.equals("operator")) {
+			System.out.print(" " + operator + " ");
+		}
+		
+		if(type.equals("value")) {
+			System.out.print(value);
+		}
+	}
+	
 	// prints out the expression in infix notation with parentheses, using a BTStack
 	public void Print(){
+		BTStack s = new BTStack();
+		s.push(null);
+		System.out.print("( ");
+		s.push(this);
+		ExpressionBT cur = left;
+		while(cur != null) {
+			if(cur.type.equals("operator")) {
+				s.push(null);
+				System.out.print("( ");
+			}
+			s.push(cur);
+			cur = cur.left;
+		}
+		while(!s.isEmpty()) {
+			cur = s.pop();
+			if(cur == null) System.out.print(" )");
+			else {
+				cur.printSingleNode();
+				cur = cur.right;
+				while(cur != null) {
+					if(cur.type.equals("operator")) {
+						s.push(null);
+						System.out.print("( ");
+					}
+					s.push(cur);
+					cur = cur.left;
+				}
+			}
+		}
 		
-		if(type.equals("var")) {
+		/*if(type.equals("var")) {
 			System.out.print(variable);
 		}
 		
@@ -157,7 +200,7 @@ class ExpressionBT{
 		
 		if(type.equals("value")) {
 			System.out.print(value);
-		}
+		}*/
 	}
 	
 	// It prints out all variables in the tree, if any. 
