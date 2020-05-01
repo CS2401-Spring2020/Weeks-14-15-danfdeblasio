@@ -5,12 +5,13 @@ class ExpressionBT{
 	String variable;
 	ExpressionBT left;
 	ExpressionBT right;
+	boolean visited;
 	
 	/*
 	 * Constructors 
 	 */
 	ExpressionBT(){
-		
+	  visited = false;
 	}
 	
 	private void printArr(String[] e) {
@@ -157,32 +158,39 @@ class ExpressionBT{
 	// prints out the expression in infix notation with parentheses, using a BTStack
 	public void Print(){
 		BTStack s = new BTStack();
-		s.push(null);
-		System.out.print("( ");
+		if(this.type.equals("operator")) System.out.print("( ");
+		visited = false;
 		s.push(this);
 		ExpressionBT cur = left;
 		while(cur != null) {
 			if(cur.type.equals("operator")) {
-				s.push(null);
 				System.out.print("( ");
 			}
+			cur.visited = false;
 			s.push(cur);
 			cur = cur.left;
 		}
 		while(!s.isEmpty()) {
-			cur = s.pop();
-			if(cur == null) System.out.print(" )");
-			else {
-				cur.printSingleNode();
-				cur = cur.right;
-				while(cur != null) {
-					if(cur.type.equals("operator")) {
-						s.push(null);
-						System.out.print("( ");
-					}
-					s.push(cur);
-					cur = cur.left;
-				}
+			cur = s.peek();
+			if(cur.visited) {
+			  System.out.print(" )");
+			  s.pop();
+			}else {
+			  cur.visited = true;
+			  cur.printSingleNode();
+			  if(cur.type.equals("operator")) {
+			    cur = cur.right;
+  			  while(cur != null) {
+			     if(cur.type.equals("operator")) {
+			        System.out.print("( ");
+			      }
+			      cur.visited = false;
+  			    s.push(cur);
+  			    cur = cur.left;
+  			  }
+			  }else {
+			    s.pop();
+			  }
 			}
 		}
 		
