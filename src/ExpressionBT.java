@@ -158,7 +158,48 @@ class ExpressionBT{
 	// prints out the expression in infix notation with parentheses, using a BTStack
 	public void Print(){
 		BTStack s = new BTStack();
+		
+		/*
+		 * Two stack version
+		 */
+		BTStack v = new BTStack();
 		if(this.type.equals("operator")) System.out.print("( ");
+		s.push(this);
+    ExpressionBT cur = left;
+    while(cur != null) {
+      if(cur.type.equals("operator")) {
+        System.out.print("( ");
+      }
+      s.push(cur);
+      cur = cur.left;
+    }
+    while(!s.isEmpty()) {
+      cur = s.pop();
+      if(cur == v.peek()) {
+        v.pop();
+        System.out.print(" )");
+      }else {
+        cur.printSingleNode();
+        if(cur.type.equals("operator")) {
+          s.push(cur);
+          v.push(cur);
+          cur = cur.right;
+          while(cur != null) {
+           if(cur.type.equals("operator")) {
+              System.out.print("( ");
+            }
+            cur.visited = false;
+            s.push(cur);
+            cur = cur.left;
+          }
+        }
+      }
+    }
+    
+		/*
+		 * Extra variable version
+		 * 
+		 
 		visited = false;
 		s.push(this);
 		ExpressionBT cur = left;
@@ -192,9 +233,13 @@ class ExpressionBT{
 			    s.pop();
 			  }
 			}
-		}
+		}*/
 		
-		/*if(type.equals("var")) {
+		/*
+		 * Recursive Version (does not comply with the assignment)
+		 * 
+
+		 if(type.equals("var")) {
 			System.out.print(variable);
 		}
 		
